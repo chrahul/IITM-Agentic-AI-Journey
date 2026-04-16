@@ -93,6 +93,4 @@ After this orientation, the goal is clarity on three points:
 
 This foundation will make the next sections easier to understand, especially when we move into vector space, similarity measures, and retrieval systems.
 
----
 
-When you are ready, we proceed to **Section 1 — From Text to Meaning: The Journey**.
