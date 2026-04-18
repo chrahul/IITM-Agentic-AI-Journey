@@ -325,6 +325,4 @@ to:
 
 ---
 
-Next:
 
-**Section 10 — Limitations, Risks & Trade-offs**
