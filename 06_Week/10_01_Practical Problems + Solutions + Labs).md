@@ -248,7 +248,7 @@ Example:
 
 ---
 
-# Step 9 — conclution
+# Step 9 — conclusion
 
 
 > This experiment demonstrates that different embedding models produce different similarity scores and ranking behavior. While both models correctly identify relevant documents, their scoring patterns and sensitivity to semantic relationships vary. In real-world systems, selecting the right embedding model is critical for retrieval quality.
