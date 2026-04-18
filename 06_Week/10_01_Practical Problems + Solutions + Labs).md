@@ -75,7 +75,6 @@ for m in models:
 
 ## Explanation
 
-Good question. If this isn’t clear, the whole exercise feels pointless. Let’s make it concrete.
 
 ---
 
