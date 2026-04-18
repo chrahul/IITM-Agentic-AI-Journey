@@ -247,6 +247,209 @@ After this section, you can:
 
 ---
 
-Next:
+
+---
+
+## EXTRA
+
+### 1. Semantic Search vs Keyword Search
+
+* Not matching exact words
+* Understanding **intent and context**
+* “Apple (fruit)” vs “Apple (company)”
+
+Correct.
+
+---
+
+### 2. Embeddings as Numerical Representation
+
+* Text → vector
+* Meaning preserved in numbers
+* Similar concepts → similar vectors
+
+Correct.
+
+---
+
+### 3. Context changes embedding
+
+* Apple (fruit) vs Apple (company) → different vectors
+
+Correct.
+
+---
+
+### 4. Need for storage + retrieval
+
+* Many embeddings → need database
+* Query → embedding → compare
+
+Correct.
+
+---
+
+### 5. Scalability problem
+
+* Linear search = too slow for millions of vectors
+
+Correct.
+
+---
+
+### 6. Indexing idea
+
+* Group similar vectors
+* Search only relevant subset
+
+Correct.
+
+---
+
+
+##  1. “Features like revenue, location, phones”
+
+You said:
+
+> embedding = handcrafted features like revenue, location
+
+This is good for intuition, but in reality:
+
+> Embeddings are **NOT manually defined features**
+
+Instead:
+
+* Learned automatically from massive data
+* Using neural networks (Word2Vec, BERT, etc.)
+
+So:
+
+| Intuition              | Reality                  |
+| ---------------------- | ------------------------ |
+| Human-defined features | Learned representations  |
+| Explainable            | Mostly not interpretable |
+
+---
+
+##  2. Vector Database vs Normal Database
+
+You said:
+
+> store embeddings in SQL database
+
+Technically possible, but not ideal.
+
+### Key difference:
+
+| Traditional DB          | Vector DB                     |
+| ----------------------- | ----------------------------- |
+| Exact match / filtering | Similarity search             |
+| Indexed on columns      | Indexed on vectors            |
+| B-tree / hash index     | ANN (Approx Nearest Neighbor) |
+
+---
+
+##  3. Core definition (very important)
+
+Let’s make it precise:
+
+> A **vector database** is a system designed to store embeddings and perform efficient similarity search using specialized indexing techniques.
+
+---
+
+##  4. About Hashing (LSH)
+
+You mentioned:
+
+> hashing → buckets → faster search
+
+Correct, but that is just **one technique**.
+
+Modern systems use:
+
+* HNSW (Hierarchical Navigable Small World graphs) → most common
+* IVF (Inverted File Index)
+* PQ (Product Quantization)
+* LSH (older approach)
+
+So don’t lock thinking to only hashing.
+
+---
+
+##  5. FAISS in your lab
+
+What you used:
+
+```python
+IndexFlatL2
+```
+
+This is actually:
+
+* **Brute-force search (no index optimization)**
+
+FAISS also supports:
+
+* Approximate search (fast)
+* Graph-based search
+
+---
+
+# Clean Final Understanding 
+
+
+
+---
+
+## Vector Search & Vector Database — Refined Understanding
+
+When building modern AI systems, text is first converted into embeddings, which are dense vector representations capturing semantic meaning.
+
+These embeddings allow us to compare data based on meaning rather than exact keyword matching. This enables semantic search, where queries like “calories in apple” and “employees in Apple” are correctly interpreted using context.
+
+However, real-world systems contain millions or billions of such embeddings. Performing similarity comparison using linear search is computationally expensive and not scalable.
+
+To solve this, vector databases are used.
+
+A vector database is a specialized system designed to:
+
+* Store high-dimensional embeddings efficiently
+* Perform fast similarity search using approximate nearest neighbor (ANN) algorithms
+
+Instead of scanning all vectors, these systems use indexing techniques (such as HNSW, IVF, etc.) to narrow down the search space and retrieve the most similar vectors quickly.
+
+The overall flow becomes:
+
+```text
+Query → Embedding → Vector Index → Nearest Neighbor Search → Results
+```
+
+This architecture forms the backbone of:
+
+* Semantic search
+* Retrieval-Augmented Generation (RAG)
+* Recommendation systems
+* AI agents with memory
+
+---
+
+# Final feedback on your understanding
+
+You are already thinking like:
+
+* Not a beginner
+* Not just a coder
+
+But:
+
+> Someone trying to understand systems end-to-end
+
+That is exactly what this course requires.
+
+---
+
+If this is clear, next section:
 
 **Section 8 — Visualising Embeddings (PCA & t-SNE)**
+
+
