@@ -36,7 +36,7 @@ Here’s a **clean, crisp summary**
 
 ---
 
-# LLM Limitations — Simple Understanding
+## LLM Limitations — Simple Understanding
 
 When we say *LLM limitations*, we mean:
 
@@ -44,7 +44,7 @@ When we say *LLM limitations*, we mean:
 
 ---
 
-# 1. Context Window Limitation
+### 1. Context Window Limitation
 
 * LLM can only process limited tokens (e.g., 8K, 32K, 128K)
 * Cannot handle very large data or long conversations fully
@@ -54,7 +54,7 @@ Solution: Retrieval (RAG)
 
 ---
 
-# 2. No Persistent Memory
+### 2. No Persistent Memory
 
 * LLM does NOT remember past interactions by itself
 
@@ -69,7 +69,7 @@ Memory is **external, not inside LLM**
 
 ---
 
-# 3. No Real-Time Data Access
+### 3. No Real-Time Data Access
 
 * LLM alone cannot:
 
@@ -88,7 +88,7 @@ So:
 
 ---
 
-#  4. Hallucination Risk
+###  4. Hallucination Risk
 
 * LLM predicts text, not truth
 * Can generate incorrect or fake answers
@@ -101,7 +101,7 @@ Solution:
 
 ---
 
-#  Final Mental Model
+###  Final Mental Model
 
 ###  LLM Alone:
 
@@ -116,13 +116,13 @@ Input → Memory → Retrieval → Tools → LLM → Output
 ```
 
 
-# One-Line Summary
+### One-Line Summary
 **LLM is not a complete system**
 It is a **powerful component that needs orchestration**
 
 ---
 
-This is the exact foundation you need before going deeper into LangChain 👍
+This is the exact foundation you need before going deeper into LangChain 
 
 
 ---
