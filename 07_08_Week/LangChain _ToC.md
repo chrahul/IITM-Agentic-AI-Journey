@@ -260,17 +260,7 @@
 * DSPy
 * AI-native programming
 
----
 
-#  SECTION 12: Your Signature Projects
-
-### 12.1 AI DevOps Assistant ( aligned to you)
-
-### 12.2 AI Trading Assistant
-
-### 12.3 Enterprise Knowledge Engine (WinfoCloudX)
-
----
 
 
 
