@@ -32,6 +32,99 @@ LLMs may generate incorrect or fabricated information when they lack sufficient 
 
 These limitations highlight that while LLMs are powerful, they are incomplete as standalone solutions.
 
+Here’s a **clean, crisp summary** 
+
+---
+
+# LLM Limitations — Simple Understanding
+
+When we say *LLM limitations*, we mean:
+
+**“What an LLM cannot do on its own (natively)”**
+
+---
+
+# 1. Context Window Limitation
+
+* LLM can only process limited tokens (e.g., 8K, 32K, 128K)
+* Cannot handle very large data or long conversations fully
+* Old context gets dropped
+
+Solution: Retrieval (RAG)
+
+---
+
+# 2. No Persistent Memory
+
+* LLM does NOT remember past interactions by itself
+
+Then why does ChatGPT remember?
+
+Because:
+
+* A **system outside LLM** stores conversation
+* Sends it again with each request
+
+Memory is **external, not inside LLM**
+
+---
+
+# 3. No Real-Time Data Access
+
+* LLM alone cannot:
+
+  * Browse internet
+  * Call APIs
+  * Fetch live data
+
+Modern tools (ChatGPT, Gemini, etc.):
+
+* Add **tool layer on top of LLM**
+
+So:
+
+* LLM ≠ internet access
+* System = internet access
+
+---
+
+#  4. Hallucination Risk
+
+* LLM predicts text, not truth
+* Can generate incorrect or fake answers
+
+Solution:
+
+* Retrieval (RAG)
+* External data
+* Validation layers
+
+---
+
+#  Final Mental Model
+
+###  LLM Alone:
+
+```
+Input → LLM → Output
+```
+
+###  Real AI System:
+
+```
+Input → Memory → Retrieval → Tools → LLM → Output
+```
+
+
+# One-Line Summary
+**LLM is not a complete system**
+It is a **powerful component that needs orchestration**
+
+---
+
+This is the exact foundation you need before going deeper into LangChain 👍
+
+
 ---
 
 ### 1.3 Need for an Orchestration Layer
