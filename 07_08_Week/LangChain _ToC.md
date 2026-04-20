@@ -1,4 +1,4 @@
-#  **LangChain Mastery Document **
+#  ** LangChain Mastery Document **
 
 ---
 
