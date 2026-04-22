@@ -1,3 +1,60 @@
+
+
+## SECTION 4: Architecture
+
+This is where everything you learned in Section 3 comes together into a **complete system view**.
+
+---
+
+## What you will learn in Section 4
+
+You will not learn new components.
+You will learn:
+
+* How components connect
+* How data flows
+* How to design real systems
+
+---
+
+## Section 4 Structure 
+
+We will cover:
+
+### 4.1 Layered Architecture
+
+Understand system layers and responsibilities
+
+### 4.2 End-to-End Flow
+
+Step-by-step execution of a request
+
+### 4.3 Orchestration Patterns
+
+Different ways to design systems
+
+### 4.4 System Design Patterns
+
+Stateless vs stateful
+Single-agent vs multi-agent
+
+---
+
+## Why this section is important
+
+Till now:
+You learned components
+
+Now:
+You learn system design
+
+This is where you move from:
+
+* Developer thinking
+  to
+* Architect thinking
+
+
 ## 4.1 Layered Architecture
 
 <img width="1106" height="740" alt="image" src="https://github.com/user-attachments/assets/94a086dd-e03e-4f70-be3e-a1a5cdeb5b19" />
