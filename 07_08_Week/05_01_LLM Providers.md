@@ -250,11 +250,6 @@ print(response.content)
 In summary, Kubernetes provides a robust framework to run distributed systems resiliently, with scaling and failover for your applications, and deployment patterns.
 
 
-
-
-
-
-
 ---
 
 ### Lab 2: Model Switching
@@ -273,16 +268,16 @@ print(llm.invoke("Explain Kubernetes architecture").content)
 
 
 
-Certainly! Here’s an overview of **Kubernetes architecture**:
+## OutPut:
 
 ---
 
-## 1. What is Kubernetes?
+### 1. What is Kubernetes?
 Kubernetes (often abbreviated as **K8s**) is an open-source platform for automating deployment, scaling, and management of containerized applications.
 
 ---
 
-## 2. High-Level Architecture
+### 2. High-Level Architecture
 
 Kubernetes follows a **master-worker** (also called **control plane - node**) architecture.
 
@@ -307,7 +302,7 @@ Each **Node** runs:
 
 ---
 
-## 3. Key Concepts
+### 3. Key Concepts
 
 - **Pod**: The smallest deployable unit; a group of containers with shared storage/network.
 - **Deployment/ReplicaSet**: Ensure the desired number of Pods are running.
@@ -316,7 +311,7 @@ Each **Node** runs:
 
 ---
 
-## 4. Interactions
+### 4. Interactions
 
 1. **User or CI/CD tool** submits a deployment definition (YAML/JSON) via `kubectl` or API.
 2. **API Server** receives and validates the request, updates etcd with the desired state.
@@ -326,7 +321,7 @@ Each **Node** runs:
 
 ---
 
-## 5. Diagram (Text-Based)
+### 5. Diagram (Text-Based)
 
 ```
 +-------------------------+
@@ -352,7 +347,7 @@ Each **Node** runs:
 
 ---
 
-## 6. Summary Table
+### 6. Summary Table
 
 | Component    | Role                                    |
 |--------------|-----------------------------------------|
@@ -367,22 +362,14 @@ Each **Node** runs:
 
 ---
 
-## 7. In Summary
+### 7. In Summary
 
 - **Control Plane** = cluster management brain
 - **Nodes** = workhorses running containers
 - **Pods** = container groups
 - **Declarative management** ensures Kubernetes strives to maintain cluster state as described by the user/YAML.
 
-**Kubernetes abstracts infrastructure, automates scaling/self-healing, and enables modern cloud-native deployments!**
-
-
-
-
-
-
-
-
+**Kubernetes abstracts infrastructure, automates scaling/self-healing, and enables modern cloud-native deployments!*
 
 ---
 
@@ -402,6 +389,7 @@ print(llm.invoke(query).content)
 ```
 
 
+### OutPut: 
 
 Kubernetes, often abbreviated as K8s, is an open-source container orchestration platform designed to automate the deployment, scaling, and management of containerized applications. It was originally developed by Google and is now maintained by the Cloud Native Computing Foundation (CNCF).
 
