@@ -87,6 +87,10 @@ These three types work together in production. No single one is sufficient on it
 
 ### 4) Memory Architecture
 
+
+<img width="1440" height="680" alt="image" src="https://github.com/user-attachments/assets/94d0fc0c-2482-43fb-8fe7-0dd86d41fb6c" />
+
+
 Here is how all three layers fit together in a real system:
 
 ```
