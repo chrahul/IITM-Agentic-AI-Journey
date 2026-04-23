@@ -1,5 +1,8 @@
 ## 5.5 Memory and Storage Systems
 
+<img width="1440" height="620" alt="image" src="https://github.com/user-attachments/assets/43833163-7e21-45c8-ac19-da0a766c4297" />
+
+
 ---
 
 ### 1) Context
