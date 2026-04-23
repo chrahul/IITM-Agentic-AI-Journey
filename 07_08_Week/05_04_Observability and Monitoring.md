@@ -4,45 +4,40 @@
 
 ### 1) Context
 
-You have now built systems that integrate LLMs, retrieve documents, and call external tools. The code runs, the output looks reasonable, and everything seems fine.
+At this stage, your system is no longer a simple LLM call. It retrieves information, uses memory, calls external tools, and makes decisions across multiple steps.
 
-But here is the real problem:
+From the outside, everything still looks simple. A user asks a question and gets a response.
 
-**You do not actually know what happened inside.**
+Internally, however, the system is doing much more — and when something goes wrong, it does not crash. It still returns an answer. The problem is that the answer may be incorrect, incomplete, slow, or unnecessarily expensive.
 
-When something goes wrong — and in production, it will — you will not know:
-- Why the system gave a wrong answer
-- Which step failed
-- How long each part took
-- Whether the retrieval was relevant or not
+This creates a new challenge. You are no longer asking *"Does it work?"*
 
-Without observability, your AI system is a black box. You can see what went in and what came out, but nothing in between. That is not acceptable in production.
+You are asking: **"Can I explain what happened inside the system?"**
 
-This section fixes that.
+Without that ability, your system is a black box. You can see input and output, but you cannot understand the process in between. That is not acceptable in production. Observability is what solves this.
 
 ---
 
 ### 2) What Observability Actually Means
 
-Observability is not just logging. It is the ability to answer three questions at any point in time:
+Observability is the ability to reconstruct the full execution of any request. For any user query, you should be able to answer:
 
-- **What happened?** — the full trace of inputs, decisions, and outputs
-- **Why did it happen?** — the reasoning path the system took
-- **Where did it fail?** — the exact step that broke
+- What input was received and how was the prompt constructed?
+- What data was retrieved — and was it relevant?
+- Which tools were called and what did they return?
+- Which model was used and how long did it take?
+- What output was generated and why?
 
-In traditional software, debugging is hard. In AI systems, it is harder — because the failure is often not an error or a crash. The system runs perfectly and still gives a wrong answer. Observability is how you catch that.
+In traditional software, failures are visible as errors and crashes. In AI systems, failures are subtle. The system runs perfectly and still gives the wrong answer. Observability is how you detect, diagnose, and fix those silent failures.
 
 ---
 
 ### 3) What You Need to Observe
 
-<img width="1440" height="1040" alt="image" src="https://github.com/user-attachments/assets/efb62cde-d92c-4e0d-a069-f087b4e04a18" />
-
-
 An AI system has several layers, and each one can fail differently:
 
-- **Input layer** — Was the user query received correctly? Was the prompt constructed properly?
-- **Retrieval layer** — Did the system fetch the right documents? Were they relevant to the query?
+- **Input layer** — Was the query received correctly? Was the prompt constructed properly?
+- **Retrieval layer** — Did the system fetch the right documents? Were they relevant?
 - **Orchestration layer** — Did the system make the right decision — which tool to call, which model to use?
 - **LLM layer** — What was the final response? How many tokens were used? How long did it take?
 - **System layer** — What is the overall latency, failure rate, and cost?
@@ -64,9 +59,7 @@ llm = ChatOpenAI(model="gpt-4o", temperature=0)
 query = "Why is my pod restarting?"
 
 start = time.time()
-
 response = llm.invoke(query)
-
 end = time.time()
 
 print("Query    :", query)
@@ -74,30 +67,22 @@ print("Response :", response.content)
 print("Latency  :", round(end - start, 2), "seconds")
 ```
 
-**Expected Output:**
+**Expected output:**
 ```
 Query    : Why is my pod restarting?
-Response : Pods can restart due to OOM errors, failed health checks, or...
+Response : Pods can restart due to OOM errors, failed health checks...
 Latency  : 1.83 seconds
 ```
 
-**What this gives you:**
-- You can see the input and output together
-- You know exactly how long the LLM took to respond
-- You can spot if latency is unusually high
+**What this gives you:** You can see the input and output together, and you know exactly how long the LLM took to respond.
 
-**What this does not give you:**
-- You still cannot see what happened between input and output
-- If retrieval was involved, you have no visibility into what was fetched
-- If the answer is wrong, you do not know why
-
-This is a starting point, not a solution. The next lab fixes this.
+**What this does not give you:** You still cannot see what happened between input and output. If the answer is wrong, you do not know why. The next lab fixes this.
 
 ---
 
-### 5) Lab 2 — Structured Step-by-Step Logging
+### 5) Lab 2 — Step-Level Observability
 
-Now add visibility into every step of the system, not just the final answer.
+Now add visibility into every step of the pipeline, not just the final answer.
 
 ```python
 import time
@@ -106,17 +91,13 @@ from langchain_chroma import Chroma
 
 llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
-# Build vector store
 texts = [
     "Pods restart due to OOM (Out of Memory) errors",
     "Health checks failing can cause pod restarts",
     "Network issues can crash pods and trigger restarts"
 ]
 
-embeddings = OpenAIEmbeddings()
-db = Chroma.from_texts(texts, embeddings)
-
-# --- Observability starts here ---
+db = Chroma.from_texts(texts, OpenAIEmbeddings())
 
 query = "Why is my pod restarting?"
 print("=" * 50)
@@ -124,140 +105,191 @@ print("STEP 1 — Input received")
 print("Query:", query)
 
 print("\nSTEP 2 — Running retrieval")
-start_retrieval = time.time()
+start_r = time.time()
 docs = db.similarity_search(query)
-end_retrieval = time.time()
+end_r = time.time()
 
-print("Retrieved documents:")
 for i, doc in enumerate(docs):
     print(f"  [{i+1}] {doc.page_content}")
-print("Retrieval latency:", round(end_retrieval - start_retrieval, 3), "seconds")
+print("Retrieval latency:", round(end_r - start_r, 3), "seconds")
 
 print("\nSTEP 3 — Calling LLM")
 context = "\n".join([doc.page_content for doc in docs])
-prompt = f"Answer the question using the context below.\n\nContext:\n{context}\n\nQuestion: {query}"
+prompt = f"Answer using context below.\n\nContext:\n{context}\n\nQuestion: {query}"
 
-start_llm = time.time()
+start_l = time.time()
 response = llm.invoke(prompt)
-end_llm = time.time()
+end_l = time.time()
+print("LLM latency:", round(end_l - start_l, 3), "seconds")
 
-print("LLM latency:", round(end_llm - start_llm, 3), "seconds")
-
-print("\nSTEP 4 — Final Response")
+print("\nSTEP 4 — Final response")
 print(response.content)
 print("=" * 50)
 ```
 
-**Output:**
+**Expected output:**
 ```
 ==================================================
 STEP 1 — Input received
 Query: Why is my pod restarting?
 
 STEP 2 — Running retrieval
-Retrieved documents:
   [1] Pods restart due to OOM (Out of Memory) errors
   [2] Health checks failing can cause pod restarts
   [3] Network issues can crash pods and trigger restarts
-Retrieval latency: 0.58 seconds
+Retrieval latency: 0.042 seconds
 
 STEP 3 — Calling LLM
-LLM latency: 3.348 seconds
+LLM latency: 1.76 seconds
 
-STEP 4 — Final Response
-Your pod could be restarting due to several reasons based on the context provided:
-
-1. **OOM (Out of Memory) Errors**: If your pod is consuming more memory than what is allocated, it can lead to OOM errors, causing the pod to restart.
-
-2. **Health Check Failures**: If the health checks configured for your pod are failing, it can trigger a restart as the system attempts to recover and ensure the pod is running correctly.
-
-3. **Network Issues**: Problems with the network can cause pods to crash, which may lead to restarts as the system tries to re-establish connectivity and maintain service availability.
-
-You may need to investigate logs and metrics to determine the specific cause of the restarts in your case.
+STEP 4 — Final response
+Pods can restart for several reasons including OOM errors...
 ==================================================
 ```
 
-**What changed:**
-
-Now you can see the full picture. If the final answer is wrong, you check Step 2 — were the right documents retrieved? If the system is slow, you check which step has the highest latency. If retrieval returned irrelevant docs, you know the problem is in your vector store, not the LLM.
-
-This is the difference between debugging blindly and debugging with evidence.
+**What changed:** Now you can see the full picture. If the final answer is wrong, you check Step 2 — were the right documents retrieved? If the system is slow, you check which step has the highest latency. This is the difference between debugging blindly and debugging with evidence.
 
 ---
 
-### 6) Real Failure Examples — What Observability Catches
+### 6) Debugging Real Failures
 
-Without structured logging, all three of these failures look identical from the outside: the system returns a wrong or incomplete answer.
+Without structured logging, these three failures all look identical from the outside — the system returns a wrong or slow answer. With observability, each one has a clear diagnosis.
 
-**Case 1 — Wrong Answer**
-The LLM responds confidently but incorrectly. With observability you check Step 2 and find the retrieved documents were irrelevant. The problem is in the retrieval layer, not the model.
+**Case 1 — Wrong answer.** You inspect Step 2 and find irrelevant documents were retrieved. The problem is not the model — it is the retrieval layer.
 
-**Case 2 — Slow Response**
-Total latency is 8 seconds. With step-level timing you find retrieval took 0.04 seconds but the LLM took 7.9 seconds. You investigate model load or switch to a faster model for this task.
+**Case 2 — Slow response.** Step-level timing shows retrieval took 0.04 seconds but the LLM took 7.9 seconds. You investigate model load or switch to a faster model for this task.
 
-**Case 3 — Hallucination**
-The answer sounds correct but is fabricated. With observability you see that retrieval returned zero relevant documents, so the LLM had no grounding context and generated from memory. The fix is improving your retrieval, not your prompt.
+**Case 3 — Hallucination.** Retrieval returned zero relevant documents, so the LLM had no grounding context and generated from memory. The fix is improving your retrieval, not your prompt.
 
-**The pattern is always the same:** observability turns a mystery into a diagnosis.
+The pattern is always the same: observability turns a mystery into a diagnosis.
 
 ---
 
-### 7) What to Measure in Production
+### 7) What to Track in Every System
 
-Once you move beyond notebooks, you need to track four categories continuously:
+As your system grows, four dimensions become critical:
 
-- **Quality** — Is the answer correct? Is retrieval returning relevant documents?
-- **Performance** — What is the end-to-end latency? What is the latency per step?
-- **Cost** — How many tokens are being used per query? What is the daily API spend?
-- **Reliability** — What percentage of requests fail? Are there retries happening?
+- **Correctness** — Are answers grounded and relevant? Is retrieval surfacing the right documents?
+- **Performance** — How long does each step take? Where is time being spent?
+- **Cost** — How many tokens are used per query? How often are models being called?
+- **Reliability** — What percentage of requests fail? Are there silent errors or retries?
 
-These four metrics together tell you whether your system is healthy.
-
----
-
-### 8) Industry Tools
-
-Manual logging gets you started. At scale, you need dedicated tools:
-
-- **LangSmith** — Purpose-built for LLM systems. Traces every chain and agent run, lets you compare outputs across runs, and helps you debug retrieval and prompt issues visually.
-- **OpenTelemetry** — The industry standard for distributed tracing. Useful when your AI system is part of a larger microservices architecture.
-- **Cloud Logging** — AWS CloudWatch, GCP Cloud Logging, and Azure Monitor for infrastructure-level metrics like failure rates and latency percentiles.
-
-Start with structured logging as in Lab 2. Integrate LangSmith when your system grows beyond a single notebook. Add OpenTelemetry when you deploy to production infrastructure.
+Together, these four metrics define the health of your system.
 
 ---
 
-### 9) Production Design Principles
+### 8) Where Basic Logging Stops Being Enough
 
-Three principles that apply to every production AI system:
+Simple `print` statements work in a notebook. They break down the moment your system involves:
 
-**Trace everything.** Every input, every retrieval result, every LLM call, and every output should be logged with a timestamp. You will not know what you need until something breaks.
+- multiple tools being called dynamically
+- agents making non-deterministic decisions
+- parallel LLM calls
+- multi-user production traffic
 
-**Monitor continuously.** Latency and quality can degrade silently over time — as your data changes, as usage patterns shift, or as model behaviour changes. Continuous monitoring catches this before users do.
-
-**Alert proactively.** Do not wait to discover failures through user complaints. Set thresholds — if latency exceeds 5 seconds, or if failure rate crosses 2%, get notified immediately.
+At that point, you need structured tracing — a systematic record of every decision, every step, and every output, linked together into a single execution trace per request.
 
 ---
 
-### 10) Final Understanding
+### 9) Advanced Observability — Tools Used in Production
 
-Here is the honest reality of production AI systems:
+---
 
-A system that works in a notebook is not the same as a system you can trust in production. The difference is not the model, not the framework, and not the prompt. The difference is whether you can see inside it when something goes wrong.
+#### LangSmith
+
+LangSmith is purpose-built for LLM-based systems. It integrates directly with LangChain and gives you full visibility into every chain and agent run without changing your code significantly.
+
+What it shows you:
+- The full execution trace for every request — every prompt, every retrieval result, every tool call, every response
+- Per-step latency and token usage — so you know exactly where time and money are going
+- Side-by-side comparison of runs — so you can test whether a prompt change improved or degraded quality
+- Automatic grouping of agent steps — so multi-step reasoning becomes readable instead of chaotic
+
+In practice, LangSmith turns debugging from guesswork into a systematic process. You do not need to add logging everywhere — you look at the trace and see what happened.
+
+---
+
+#### OpenTelemetry
+
+When your AI system is part of a larger architecture — sitting behind an API gateway, calling microservices, writing to databases — observability must extend beyond a single application.
+
+OpenTelemetry is the industry standard for distributed tracing. It allows you to:
+- Track a single user request as it flows across multiple services
+- Identify exactly which service or step introduced a bottleneck
+- Connect your AI system's traces to your broader infrastructure monitoring
+
+This is essential when your system grows beyond a single Python process into a real production deployment.
+
+---
+
+#### Cloud Logging Systems
+
+Cloud platforms provide centralised, scalable logging that complements tracing tools:
+
+- **AWS CloudWatch** — logs, metrics, and alerts for AWS-hosted systems
+- **GCP Cloud Logging** — integrated with Vertex AI and GKE deployments
+- **Azure Monitor** — for Azure OpenAI and Azure-hosted services
+
+These are not replacements for LangSmith or OpenTelemetry. They operate at the infrastructure level — tracking CPU, memory, error rates, and uptime — while tracing tools operate at the application level, tracking what your AI system decided and why.
+
+---
+
+### 10) Tracking Decisions and Flows in Agents
+
+In simple RAG systems, the execution path is fixed. In agent-based systems, it is not. The agent decides at runtime:
+
+- whether to retrieve data or use what it already knows
+- which tool to call and with what parameters
+- whether the result is sufficient or whether to loop again
+
+This makes observability harder and more important at the same time. If the agent takes an unexpected path, you need to see the decision it made at each step — not just the final output.
+
+Without decision-level tracing, a misbehaving agent is nearly impossible to debug. With it, you can see exactly where the reasoning went wrong.
+
+---
+
+### 11) Latency and Token Monitoring in Production
+
+Two metrics become critical as usage grows.
+
+**Latency** determines user experience. A correct answer that takes 15 seconds is not acceptable in most products. Per-step latency tracking lets you identify the bottleneck — whether it is retrieval, the model call, or something else — and optimize specifically for it rather than guessing.
+
+**Token usage** determines cost. Large prompts, excessive context, repeated calls, and unnecessary memory injection all increase token count quietly. Monitoring token usage per step and per user lets you catch runaway costs before they become a problem, and design targeted optimizations — caching, context trimming, model routing — based on real data.
+
+---
+
+### 12) Production Design Principles
+
+Three principles apply to every production AI system:
+
+**Trace everything.** Every input, retrieval result, decision, tool call, and output should be logged with a timestamp and linked to the same request ID. You will not know what you need until something breaks.
+
+**Monitor continuously.** Latency and quality degrade silently over time — as your data changes, as usage patterns shift, as model behavior evolves. Continuous monitoring catches degradation before users report it.
+
+**Alert proactively.** Do not wait to discover failures through user complaints. Set thresholds — if latency exceeds 5 seconds, or failure rate crosses 2%, get notified immediately and investigate before the problem spreads.
+
+---
+
+### 13) Final Understanding
+
+A system that works in a notebook is not the same as a system you can trust in production. The difference is not the model, not the framework, and not the prompt.
+
+The difference is whether you can see inside it when something goes wrong.
 
 Observability is what separates a demo from a deployable system.
 
-> **If you cannot debug your AI system, you cannot scale it. If you cannot scale it, it has no real value.**
+> **If you cannot see what your AI system is doing, you cannot trust it. If you cannot trust it, you cannot scale it.**
 
 ---
 
 **What you learned in this section:**
-- Why observability matters and what it actually means in AI systems
-- How to add basic timing and logging to any LLM call
-- How to trace every step of a RAG pipeline with structured logging
-- How to connect a wrong output back to its root cause
-- What to measure in production and which tools to use
+- How to move from basic timing to full step-level tracing
+- How to diagnose wrong answers, slow responses, and hallucinations using evidence
+- What to track in production — correctness, performance, cost, reliability
+- How LangSmith, OpenTelemetry, and cloud logging systems work and when to use each
+- How to trace agent decisions, not just outputs
+- How to monitor latency and token usage as production metrics
 
 ---
 
-*Next: **5.5 Evaluation & Testing** — where we go beyond logging and actually measure whether the system is giving correct answers.*
+*Next: **5.5 Evaluation and Testing** — where you stop assuming your system works and start measuring whether it actually does.*
