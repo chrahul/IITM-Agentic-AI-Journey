@@ -34,6 +34,10 @@ In traditional software, failures are visible as errors and crashes. In AI syste
 
 ### 3) What You Need to Observe
 
+
+<img width="1440" height="1040" alt="image" src="https://github.com/user-attachments/assets/ef0a7bd7-c86b-47e8-a62d-847039f8cb8c" />
+
+
 An AI system has several layers, and each one can fail differently:
 
 - **Input layer** — Was the query received correctly? Was the prompt constructed properly?
