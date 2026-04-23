@@ -148,7 +148,7 @@ print(response.content)
 print("=" * 50)
 ```
 
-**Expected Output:**
+**Output:**
 ```
 ==================================================
 STEP 1 — Input received
@@ -159,14 +159,21 @@ Retrieved documents:
   [1] Pods restart due to OOM (Out of Memory) errors
   [2] Health checks failing can cause pod restarts
   [3] Network issues can crash pods and trigger restarts
-Retrieval latency: 0.042 seconds
+Retrieval latency: 0.58 seconds
 
 STEP 3 — Calling LLM
-LLM latency: 1.76 seconds
+LLM latency: 3.348 seconds
 
 STEP 4 — Final Response
-Pods can restart for several reasons including OOM errors,
-failed health checks, and network issues...
+Your pod could be restarting due to several reasons based on the context provided:
+
+1. **OOM (Out of Memory) Errors**: If your pod is consuming more memory than what is allocated, it can lead to OOM errors, causing the pod to restart.
+
+2. **Health Check Failures**: If the health checks configured for your pod are failing, it can trigger a restart as the system attempts to recover and ensure the pod is running correctly.
+
+3. **Network Issues**: Problems with the network can cause pods to crash, which may lead to restarts as the system tries to re-establish connectivity and maintain service availability.
+
+You may need to investigate logs and metrics to determine the specific cause of the restarts in your case.
 ==================================================
 ```
 
