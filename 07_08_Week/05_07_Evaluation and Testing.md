@@ -142,6 +142,9 @@ Retrieval evaluation questions:
 
 This is the mindset shift that most people miss. **When an AI system gives a wrong answer, the instinct is to fix the prompt or change the model. Most of the time, the real problem is in retrieval.**
 
+
+
+
 ---
 
 ### 6) Lab 3 — End-to-End Pipeline Evaluation
@@ -347,50 +350,7 @@ Yes — all three are relevant. Retrieval passed this check.
 
 ---
 
-**Question 2 — Is anything important missing?**
 
-Look at what did NOT come back:
-```
-[4] Kubernetes scheduler moves pods  ← not about restarting
-[5] Liveness probe failures          ← THIS causes restarts!
-```
-
-Document 5 about liveness probes was missed — and liveness probe failures are a very common cause of pod restarts. This is a gap in retrieval.
-
-**This is the most important teaching moment.**
-
-Tell the student:
-
-> "The system missed document 5. If a user's pod is restarting because of a liveness probe failure, the system would give them an incomplete answer — not because the model is bad, but because retrieval didn't surface the right document."
-
----
-
-**Question 3 — Is there noise?**
-
-Look at document 3:
-```
-[3] Network issues can crash pods
-```
-
-Network issues crash pods — but crashing is slightly different from restarting. This document is borderline. It is not wrong to include it, but it is the weakest of the three.
-
----
-
-## The lesson to leave with the student
-
-Draw this on a whiteboard or show it as text:
-
-```
-Good retrieval  →  LLM has right context  →  Good answer
-Bad retrieval   →  LLM has wrong context  →  Wrong answer
-                   (even if model is perfect)
-```
-
-Then say:
-
-> "This is why we evaluate retrieval first — before we even look at what the LLM said. A great model cannot fix bad retrieval. Garbage in, garbage out."
-
----
 
 That one phrase — **garbage in, garbage out** — is what students remember. The rest is the evidence that proves it.
 ---
