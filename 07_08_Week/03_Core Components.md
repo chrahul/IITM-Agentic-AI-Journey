@@ -367,3 +367,16 @@ LLM is not the system
 It is one component inside a larger system
 
 ---
+
+<img width="1440" height="1440" alt="image" src="https://github.com/user-attachments/assets/3017fc0b-f18d-4d50-aa0b-685d5f4ba6d0" />
+
+Read it top to bottom — that is one complete request cycle.
+
+The User asks something. It goes into the Prompt Template which gives it structure. Memory feeds into the prompt too — so the LLM knows what was said before.
+
+The formatted prompt goes to the LLM, which thinks about it. The LLM hands control to the Agent, which decides: can I answer this directly, or do I need a tool? If it needs a tool — calculator, search, API — it calls Tools and gets the result back.
+
+Meanwhile, the Vector Store holds your documents. RAG searches that store, pulls the relevant chunks, and sends them back up to the LLM as enriched context — that is the dashed line going back up the right side.
+
+Finally, the Output goes to the user — and is also saved back into Memory via the dashed line on the left, so the next question remembers this one.
+
