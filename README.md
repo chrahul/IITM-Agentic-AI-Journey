@@ -1,174 +1,99 @@
+# IITM Agentic AI Journey
 
+> **Documenting my transition from Cloud Strategy & DevOps leadership into production-grade Agentic AI / LLMOps engineering.**
 
-# GitHub Repo Structure )
+---
 
-## Repo Philosophy
+## About
 
-This is NOT:
+I'm **[Rahul Chaubey](https://www.linkedin.com/in/chaubeyrahul/)**, Director — Cloud Strategy at CloudX.
+For over a decade, I've worked across **AWS, Azure, OCI, AI/ML, GenAI, DevOps and Cloud Infrastructure**, helping enterprises design and operate cloud platforms.
 
-> “notes repo”
+This repository is my structured 6-month journey to extend that craft into **Agentic AI and LLMOps** — building, deploying, and operating LLM-powered systems with the same rigor we apply to traditional cloud workloads.
 
-This is:
+---
 
-> “AI Systems Learning + Implementation Repository”
+## Why this repository exists
 
-Each week follows:
+GenAI today is chaotic. Teams want to ship LLM-powered solutions, but very few engineers have **end-to-end** clarity on what it actually takes to run one in production. Most treat the LLM as the system. It isn't.
+
+> *A powerful abstraction is not a complete system.*
+
+A model behind an API is just one component. Real production GenAI requires retrieval, memory, evaluation, observability, guardrails, cost control, IaC, and the operational discipline that cloud and DevOps engineers have been refining for fifteen years.
+
+This repository is my attempt to build that complete picture — week by week, in the open — so that it eventually serves as a reference others can use to build production-grade Agentic AI systems, not just demos.
+
+---
+
+## What's inside
+
+The journey is organized week-by-week. Each week follows the same structure:
 
 ```
-Context → Concept → Intuition → System → Lab → Reflection
+Context  →  Concepts  →  Intuition  →  System Design  →  Labs  →  Mini Project  →  Reflections
 ```
 
----
+Notes capture what I learned. **Mini-projects capture what I built.** Reflections capture what actually clicked versus what looked clearer than it was.
 
-#  ROOT STRUCTURE
-
-```bash
-IITM-Agentic-AI-Journey/
-│
-├── README.md
-├── 00_Foundations/
-├── 01_Python_Refresher/
-├── 02_AI_ML_Basics/
-├── 03_LLM_Fundamentals/
-├── 04_Prompt_Engineering/
-├── 05_LangChain_Intro/
-├── 06_Embeddings_Vector_Search/   👈 (Current Week)
-├── 07_Agents_Tools/
-├── 08_Agent_Architecture/
-├── 09_Memory_RAG/
-├── 10_Advanced_RAG/
-├── 11_Evaluation_Observability/
-├── 12_Ethics_Governance/
-├── 13_Capstone_Project/
-│
-├── assets/          # images, diagrams
-├── utils/           # reusable code
-├── requirements.txt
-└── LICENSE
-```
+| # | Week / Module | Status |
+|---|---|---|
+| 00 | Foundations | Pending |
+| 01 | Python Refresher | ✅ Complete |
+| 02 | AI / ML Basics | ✅ Complete |
+| 03 | LLM Fundamentals | ✅ Complete |
+| 04 | Prompt Engineering | ✅ Complete |
+| 05 | LangChain Intro | ✅ Complete |
+| 06 | Embeddings & Vector Search | 🔨 In Progress |
+| 07 | Agents & Tools | Upcoming |
+| 08 | Agent Architecture | Upcoming |
+| 09 | Memory & RAG | Upcoming |
+| 10 | Advanced RAG | Upcoming |
+| 11 | Evaluation & Observability | Upcoming |
+| 12 | Ethics & Governance | Upcoming |
+| 13 | Capstone Project | Upcoming |
 
 ---
 
-#  WEEK-WISE STRUCTURE (STANDARD TEMPLATE)
+## Parallel build track: LLMOps focus
 
-Every week folder (like Week 6) will follow SAME structure:
+Alongside the IITM Pravartak curriculum, I'm running a parallel build track focused on the operational layer most courses skim past:
 
-```bash
-06_Embeddings_Vector_Search/
-│
-├── README.md                # Week Overview
-│
-├── 01_Context/
-│   └── overview.md
-│
-├── 02_Concepts/
-│   ├── embeddings.md
-│   ├── similarity.md
-│   ├── vector_search.md
-│   └── visualization.md
-│
-├── 03_Intuition/
-│   └── analogies.md
-│
-├── 04_System_Design/
-│   └── architecture.md
-│
-├── 05_Labs/
-│   ├── lab1_embeddings.ipynb
-│   ├── lab2_similarity.py
-│   ├── lab3_vector_search_faiss.py
-│   └── lab4_visualization.ipynb
-│
-├── 06_Mini_Project/
-│   ├── semantic_search_engine.py
-│   └── README.md
-│
-├── 07_Reflections/
-│   └── learnings.md
-│
-└── assets/
-    ├── diagrams.png
-    └── outputs.png
-```
+- LLM observability (Langfuse, OpenTelemetry GenAI)
+- Evaluation as a CI gate (Ragas, Promptfoo, LLM-as-judge)
+- LLM gateways, semantic caching, cost control (LiteLLM)
+- Guardrails and prompt-injection defense
+- Multi-cloud deployment on AWS Bedrock and Azure AI Foundry
+- IaC for LLM platforms (Terraform modules)
+
+This is the layer that turns a notebook demo into a production system — and the layer where my cloud and DevOps background carries over directly.
 
 ---
 
-# HOW EACH FOLDER SHOULD BE WRITTEN
+## Tech & tools used
 
-##  Context (overview.md)
-
-Explain in **your own words**:
-
-* What this week is about
-* Why it matters
-* Where it fits in GenAI
-
----
-
-##  Concepts
-
-Each file = one topic
-
-Example:
-
-### `embeddings.md`
-
-* Definition
-* Mathematical intuition
-* Example
-* Real-world usage
-* 
----
-
-## System Design
-
-Example (Week 6):
-
-```id="zqevvy"
-User Query → Embedding → Vector DB → Similarity → Top Results
-```
-
-Explain like:
-
-* Architect
-* Not student
+**Languages:** Python
+**Frameworks:** LangChain, LangGraph, FastAPI, Pydantic
+**Vector stores:** pgvector, FAISS, ChromaDB
+**Models / APIs:** Anthropic Claude, OpenAI, AWS Bedrock, Azure OpenAI
+**LLMOps:** Langfuse, LiteLLM, Ragas, Promptfoo
+**Cloud & infra:** AWS, Azure, OCI, Kubernetes, Docker, Terraform
 
 ---
 
-## Labs
+## How to navigate this repo
 
-VERY IMPORTANT
-
-Each lab should:
-
-* Solve one concept
-* Be clean
-* Be reproducible
+- Browse week folders in order if you're following the journey end-to-end.
+- Each week's `README.md` summarizes what was built and what was learned.
+- `06_Mini_Project/` inside each week contains runnable code — that's where the actual systems live, not the notes.
 
 ---
 
-## Mini Project
+## Connect
 
-For Week 6:
+If you're working on production Agentic AI systems, designing LLMOps platforms, or making a similar transition from cloud/DevOps into GenAI engineering — I'd be glad to compare notes.
 
- **Semantic Search Engine**
-
-Features:
-
-* Input query
-* Convert to embedding
-* Search top K results
+📍 **LinkedIn:** [linkedin.com/in/chaubeyrahul](https://www.linkedin.com/in/chaubeyrahul/)
 
 ---
 
-## Reflection
-
-This is what makes your repo **elite**
-
-Write:
-
-* What clicked
-* What was confusing
-* Where this is used in real world
-
----
+*Last updated: May 2026 · Active development*
