@@ -178,29 +178,8 @@ Instead of humans writing rules, we need systems that:
 
 ### Diagram 3: The Machine Learning Alternative (Preview)
 
-```
-[DIAGRAM DESCRIPTION FOR DRAW.IO]
+<img width="1440" height="840" alt="image" src="https://github.com/user-attachments/assets/3c00ed47-54dd-4653-b51e-c0c3cec926df" />
 
-Title: The New Paradigm - Machine Learning
-
-Create a comparison diagram split into two columns:
-
-LEFT COLUMN - "Traditional Programming":
-- INPUT: Data + Rules (human-written)
-- PROCESS: Execute rules
-- OUTPUT: Answers
-
-RIGHT COLUMN - "Machine Learning":  
-- INPUT: Data + Answers (examples)
-- PROCESS: Learn patterns automatically
-- OUTPUT: Rules (learned by machine)
-
-Draw a big ARROW from left to right labeled:
-"The Flip: We give examples, machine discovers rules"
-
-Add a callout box:
-"This is the fundamental shift that enables modern AI"
-```
 
 ---
 
