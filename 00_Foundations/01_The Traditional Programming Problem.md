@@ -29,31 +29,13 @@ You go back and add 50 more rules. Then 500 more rules. Then you realize you are
 ### Diagram 1: Traditional Programming Model
 
 ```
-[DIAGRAM DESCRIPTION FOR DRAW.IO]
 
 Title: Traditional Programming Flow
 
-Create a flowchart with these elements:
+<img width="1440" height="1040" alt="image" src="https://github.com/user-attachments/assets/a66844bc-c321-4b23-a398-0e2efb52d5a1" />
 
-1. INPUT BOX (Top): "Raw Data" 
-   Examples: Email text, User behavior, Image pixels
 
-2. PROCESS BOX (Middle): "Human-Written Rules"
-   Inside this box, show:
-   - if condition1 then action1
-   - if condition2 then action2
-   - if condition3 then action3
-   - ... (dotted lines showing more rules)
 
-3. OUTPUT BOX (Bottom): "Decision/Prediction"
-   Examples: Spam or Not Spam, Recommend or Don't Recommend
-
-4. FEEDBACK LOOP (Arrow from output back to process box):
-   Label: "Rules fail → Human updates rules → Deploy again"
-   Color: RED to indicate manual intervention
-
-5. Add a SIDE NOTE in a callout box:
-   "Every new edge case requires a human to write a new rule"
 ```
 
 ### The Three Fatal Limitations
