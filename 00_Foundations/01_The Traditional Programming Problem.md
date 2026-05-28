@@ -91,34 +91,8 @@ And even then, it would fail on chairs with slight variations.
 
 ### Diagram 2: When Traditional Programming Breaks
 
-```
-[DIAGRAM DESCRIPTION FOR DRAW.IO]
+<img width="1440" height="880" alt="image" src="https://github.com/user-attachments/assets/3bb946b6-84b7-489b-83b5-db45954de3e1" />
 
-Title: The Complexity Wall
-
-Create a graph with:
-
-X-axis: Problem Complexity
-   Labels: Simple → Moderate → Complex → Extremely Complex
-
-Y-axis: Effectiveness of Rule-Based Systems
-   Labels: 0 percent (bottom) to 100 percent (top)
-
-Plot a CURVE that:
-- Starts high at 100 percent for "Simple" problems
-- Gradually decreases to 80 percent at "Moderate"  
-- Drops sharply to 40 percent at "Complex"
-- Plummets to 10 percent at "Extremely Complex"
-
-Add example annotations on the curve:
-- At 100 percent (Simple): "Calculator, Form Validation"
-- At 80 percent (Moderate): "Basic Spam Filter with 20 rules"
-- At 40 percent (Complex): "Movie Recommendations with 1000 rules"
-- At 10 percent (Extremely Complex): "Image Recognition, Natural Language Understanding"
-
-Add a RED ZONE shading for anything below 50 percent effectiveness
-Label it: "Where Traditional Programming Fails"
-```
 
 ---
 
