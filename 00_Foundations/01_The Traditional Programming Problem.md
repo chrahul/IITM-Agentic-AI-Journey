@@ -28,7 +28,6 @@ You go back and add 50 more rules. Then 500 more rules. Then you realize you are
 
 ### Diagram 1: Traditional Programming Model
 
-```
 
 Title: Traditional Programming Flow
 
@@ -36,7 +35,6 @@ Title: Traditional Programming Flow
 
 
 
-```
 
 ### The Three Fatal Limitations
 
