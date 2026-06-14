@@ -1,13 +1,127 @@
 # Agents to CrewAI: 
----
 
 ## What is this
+
+Multi-Agent Banking Resolution System with CrewAI, 4 agents in a sequential pipeline, graded on role clarity, collaboration logic, realism, tool use, and code structure. That's a clean design problem, not a Python wrestling match.
+
 
 The Week 12 mini-project asks you to design a 4-agent banking resolution system. To build it *well* (not just pass), you need a working mental model of three things:
 
 1. What an *agent* actually is — versus a chatbot, versus an LLM call.
 2. Why *multi-agent* is a different beast from chaining LLM calls.
 3. How *CrewAI* expresses these ideas in code — and where it hides decisions that you should be making explicitly.
+
+
+<img width="1440" height="1822" alt="image" src="https://github.com/user-attachments/assets/5d6f26d7-4dd3-45c5-b305-8e73703a8207" />
+
+
+The spine is the sequential pipeline. Every agent passes its output down to the next. This is the core of rubric criterion 2.2 — the evaluator wants to see that Agent 2 cannot work without Agent 1's output, Agent 3 cannot work without Agent 2's policy block, and Agent 4 sees all three. That dependency chain is what CrewAI's context=[task_1, task_2] parameter implements in code.
+
+The dashed context arrows on the sides show that Agent 3 receives context from both Agent 1 and Agent 2 — not just the one immediately above. Same for Agent 4. This is what separates real collaboration from "four independent LLM calls."
+
+Each box shows the I/O contract explicitly. This is what you design before writing CrewAI code. If you can't state the input and output of each agent in one line, the agent's role isn't clear enough yet — and you'll lose marks on criterion 2.1.
+
+The three outcome nodes at the bottom (Low / Medium / High-Critical) map directly to the escalation logic in Section 6 of your assignment spec.
+The three sample queries at the very bottom are your test cases for verification after implementation.
+
+
+<img width="1440" height="840" alt="image" src="https://github.com/user-attachments/assets/a2f9f09f-70ee-43a3-8810-732c403626f6" />
+
+Let me teach this properly — starting from what problem it solves, then building the mental model, then connecting it to your assignment.
+
+---
+
+## What problem does it solve?
+
+Imagine you're a bank's customer support system. A message arrives:
+
+> *"There's a ₹50,000 transaction I didn't make."*
+
+Before anyone can do anything useful — look up policies, draft a response, assess risk — someone needs to answer one question: **what kind of problem is this?**
+
+That's the entire job of Agent 1. Nothing more. It reads the raw customer text and produces a single structured label — the **intent category**.
+
+---
+
+## Why is this a separate agent and not just part of Agent 2 or 3?
+
+This is the most important design question for your rubric. The evaluator is specifically looking for *role clarity* (25 marks).
+
+Think of it like a hospital triage nurse. She doesn't diagnose you. She doesn't prescribe medication. She does one thing: looks at you and decides — chest pain goes to cardiology, broken arm goes to orthopaedics, fever goes to general medicine. That routing decision is so critical that it gets its own dedicated role.
+
+If you merged intent classification into the policy agent, two things break:
+- The policy agent's prompt becomes bloated and unfocused — it has to be an expert in NLP *and* banking law simultaneously
+- When it gets it wrong (and it will), you can't tell whether the classification failed or the policy lookup failed
+
+Separation gives you **debuggability** and **role clarity**. These are the same reasons you don't put your database logic inside your API handler in production code.
+
+---
+
+## What does it actually do inside?
+
+The agent runs a small ReAct loop (Thought → Action → Observation → Answer) powered by an LLM. Here's what that looks like mentally for your banking case:
+
+**Thought:** The customer says "₹50,000 transaction I didn't make." The words "didn't make" and a specific amount suggest an unauthorized transaction. That maps to Fraud.
+
+**Action:** (no external tool needed here — this is pure reasoning)
+
+**Answer:** `intent: Fraud`
+
+For a simpler query like *"What's my loan eligibility?"*, the loop is even shorter — the LLM recognizes "loan eligibility" directly and returns `intent: Loan Inquiry`.
+
+---
+
+## The I/O contract
+
+This is what you'll define in CrewAI code:Here's the I/O contract diagram — this is what you design *before* writing a single line of CrewAI code.---
+
+## How this translates to CrewAI code — conceptually
+
+You're not writing this yet, but you should understand the shape of what you will write. In CrewAI, Agent 1 looks like this in structure:
+
+```python
+intent_classifier = Agent(
+    role="Banking Intent Classifier",
+    goal="Classify the customer's banking query into exactly one intent category",
+    backstory="""You are a specialist in understanding banking customer queries.
+    You read the raw customer message and determine the intent — nothing else.
+    You do not suggest solutions. You do not look up policies. You classify.""",
+    verbose=True,
+    llm=llm
+)
+
+classify_task = Task(
+    description="""Analyse the following customer query and classify it into 
+    exactly one of: Fraud, Transaction Issue, Loan Inquiry, Card Problem, General Inquiry.
+    Customer query: {customer_query}""",
+    expected_output="A single intent label with a one-sentence justification.",
+    agent=intent_classifier
+)
+```
+
+Notice three things that will make sense once we hit Module 6:
+
+`role` + `goal` + `backstory` together form the system prompt CrewAI sends to the LLM. The `backstory` is where you enforce the boundary — "you classify, nothing else." That boundary is exactly what rubric criterion 2.1 is testing.
+
+`expected_output` is critical. If you write "return the intent" it's vague. If you write "a single intent label with a one-sentence justification" the LLM produces structured, predictable output that Agent 2 can consume reliably.
+
+`context` is *absent* here — Agent 1 has no dependency. It only receives the raw query. That's correct.
+
+---
+
+## Teach-It-Back checkpoint
+
+Before we move to Agent 2, answer these in your own words:
+
+1. Why is intent classification a dedicated agent and not merged with the policy agent?
+2. What would break in the system if Agent 1 sometimes returned "This looks like fraud, you should freeze the account" instead of just a category label?
+3. In your own words: what is the `backstory` field in a CrewAI agent actually doing under the hood?
+
+No looking at the notes — just type what you think. If it comes out clear, we move to Agent 2.
+
+
+
+
 
 This course gets you there. It uses your existing knowledge of embeddings and transformers as the floor and walks you up to architecture-review confidence.
 
