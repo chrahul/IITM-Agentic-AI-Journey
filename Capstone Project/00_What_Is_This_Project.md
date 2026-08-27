@@ -2,7 +2,7 @@
 
 ## Capstone Project: Design, Build, Evaluate an AI Agent
 
-### Master Project Specification for Rahul + Claude + ChatGPT
+### Master Project Specification 
 
 ---
 
